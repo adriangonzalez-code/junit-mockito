@@ -27,6 +27,10 @@ JUnit es un framework para escribir pruebas unitarias de nuestro código y ejecu
  * @AfterAll
  * @Disable
 
+## TDD (TEST DRIVEN DEVELOPMENT)
+
+Desarrollo orientado a pruebas unitarias o desarrollo guiado a pruebas, es una técnica de desarrollo de aplicaciones de software que involucra dos partes, primero escribimos nuestros test, métodos test sin código y después implementamos el código del negocio, es decir las reglas del negocio; y por último, mediante refactorización, implementamos los `test methods` definidos en un principio para validar y verificar que se cumplan las reglas del negocio definidas.
+
 ## TRABAJANDO CON JUNIT JUPITER
 
 ### DEPENDENCIAS MAVEN
@@ -56,6 +60,45 @@ void test () {
 
 Existen diferentes formas para afirmar valores esperados evaluando valores reales a través de los **assertions**, se mencionan algunos:
 
-  * assertEquals: afirmar que un valor dado sea el esperado
+  * assertEquals: afirmar que un valor dado sea igual al valor esperado
+  * assertNotEquals: afirmar que un valor dado no sea igual al valor esperado
   * assertTrue: afirmar que un valor booleano esperado sea true
   * assertFalse: afirmar que un valor booleano esperado sea false
+  * assertThrows: afirmar que se dispara una excepción específica o esperada, como primer argumento recibe la clase excepción esperada, y como segundo argumento una expresión lambda `() -> {}` con la lógica del test. **assertThrows** devuelve Exception, donde podemos acceder a los atributos de esa clase y evaluarlos posteriormente.
+  * assertAll: ir a **assertAll**
+
+### assertAll
+
+La expresión `assertAll`, nos permite visualizar todos los assertions que no se cumplieron dentro de un método test, ya que normalmente, cuando se declaran las afirmaciones (assertions), al fallar el primero se detiene en ese punto impidiendo la ejecución del resto de los assertions de ese mismo método, por lo que no nos es posible visualizar si el resto de los assertions también pueden fallar.
+
+La expresión `assertAll`, nos muestra en el reporte todos los assertions que no se cumplieron. Esta expresión recibe como argumento un conjunto de expresiones lambda, donde en cada una de ella se definen los assertions a ejecutar.
+
+### INTEGRAR MENSAJES EN LOS ASSERTIONS
+
+Todos los assertions, aceptan como último argumento un objeto de tipo String, el cual nos permite agregar un mensaje personalizado para describir de una manera más clara el error producido en caso de que el assertion falle.
+
+Ejemplo:
+
+~~~
+assertTrue(exp, "Message");
+~~~
+
+Como medida de buena práctica, no es recomendable definir el String literal, ya que, independientemente el assertion falle o no falle, el String por detrás se construye y esto consume recurso, y considerando si tenemos muchos test con muchos assertions, el consumo de recurso será significativo; para ello, se recomienda que en vez de pasar el String literal se pase una expresión lambda, para que así no se construya el String sino solo si el assertion falla.
+
+Por ejemplo:
+
+~~~
+assertTrue(exp, () -> "Message");
+~~~
+
+### ANOTACIONES ADICIONALES
+
+#### @DisplayName
+
+Esta anotación nos permite agregar mayor información a un método test, información descriptiva a cerca de su funcionalidad, de tal manera que se nos sea más fácil identificar en el reporte.
+
+#### @Disabled
+
+Esta anotación nos sirve para indicarle a JUnit que el test no debe ejecutarse, es decir, se ignora, y en el reporte se muestra como test ignorado.
+
+### CICLO DE VIDA
