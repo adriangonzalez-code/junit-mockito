@@ -102,3 +102,51 @@ Esta anotación nos permite agregar mayor información a un método test, inform
 Esta anotación nos sirve para indicarle a JUnit que el test no debe ejecutarse, es decir, se ignora, y en el reporte se muestra como test ignorado.
 
 ### CICLO DE VIDA
+
+El ciclo de vida es el proceso en el cual se crea una instancia, se procesa y se destruye. Un punto a tener en cuenta, es que en JUnit, por cada método de test, se va a tener una instancia distinta, es decir, por cada método se va a crear una nueva instancia de la clase.
+
+#### ANOTACIONES DEL CICLO DE VIDA
+
+##### @BeforeAll
+
+Se ejecuta antes de todos los métodos, se ejecuta una sola vez durante la ejecución de nuestra prueba unitaria. Es un método que se ejecuta antes de crear la instancia de la clase, por lo que debe ser declarado como static.
+
+##### @BeforeEach
+
+Se ejecuta antes de la invocación de cada método test.
+
+##### @AfterEach
+
+Se ejecuta después de la invocación de cada método test.
+
+##### @AfterAll
+
+Se ejecuta una sola vez al finalizar la prueba unitaria. Es un método que se ejecuta antes de crear la instancia de la clase, por lo que debe ser declarado como static.
+
+#### HOOKS O EVENTOS
+
+Es un mecanismo para ejecutar algún código específico en cierto punto del ciclo de vida.
+
+#### ESTABLECER ORDEN EN LOS TEST
+
+Aunque no es buena práctica establecer un orden en los test, podemos ordenarlos de acuerdo a nuestras necesidades, para ello, a nivel clase, debemos anotar con:
+
+~~~
+TestInstance(TestInstance.Lifecycle.PER_METHOD)
+class ClassTest {
+    ...
+}
+~~~
+
+### TEST CONDICIONALES
+
+Las condicionales son pruebas unitarias que se van a ejecutar en cierto escenario, contexto o configuraciones, se mencionan algunos:
+
+* **@EnabledOnOs**: Ejecutar el test en cierto(s) sistema(s) operativo(s), los cuales pueden ser:
+* **@DisabledOnOs**: Deshabilitar el test en cierto(s) sistema(s) operativo(s).
+* **@EnabledOnJre**: Ejecutar el test en cierta(s) version(es) de Java.
+* **@DisabledOnJre**: Deshabilitar el test en cierta(s) version(es) de Java.
+* **@EnabledIfSystemProperty**: Ejecutar test cuando una propiedad del sistema dada tenga un valor determinado. Para crear una nueva property en el arranque de la aplicación, escribimos `-DENV=DEV` en *Build and Run*
+* **@DisabledIfSystemProperty**: Deshabilitar test cuando una propiedad del sistema dada tenga un valor determinado.
+* **@EnabledIfEnvironmentVariable**: Ejecutar test cuando una variable de ambiente dada tenga un valor determinado. Para crear una nueva variable en el arranque de la aplicación, escribimos `ENVIRONMENT=DEV` en *Environment Variables*
+* **@DisabledIfEnvironmentVariable**: Deshabilitar test cuando una variable de ambiente dada tenga un valor determinado.
