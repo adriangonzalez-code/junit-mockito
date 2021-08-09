@@ -182,4 +182,16 @@ class CuentaTest {
                             .anyMatch(c -> c.getPersona().equals("John")));
                 });
     }
+
+    @DisplayName("Probando Débito Cuenta Repetir")
+    @RepeatedTest(value = 5, name = "{displayName} - Repetición número {currentRepetition} de {totalRepetitions}")
+    void testDebitoCuentaRepeated(RepetitionInfo info) {
+        if (info.getCurrentRepetition() == 3) {
+            System.out.println("Estamos en la repetición " + info.getCurrentRepetition());
+        }
+        this.cuenta.debito(new BigDecimal("100"));
+        assertNotNull(this.cuenta.getSaldo());
+        assertEquals(900, this.cuenta.getSaldo().intValue());
+        assertEquals("900.12345", this.cuenta.getSaldo().toPlainString());
+    }
 }

@@ -67,13 +67,13 @@ Existen diferentes formas para afirmar valores esperados evaluando valores reale
   * assertThrows: afirmar que se dispara una excepción específica o esperada, como primer argumento recibe la clase excepción esperada, y como segundo argumento una expresión lambda `() -> {}` con la lógica del test. **assertThrows** devuelve Exception, donde podemos acceder a los atributos de esa clase y evaluarlos posteriormente.
   * assertAll: ir a **assertAll**
 
-### assertAll
+#### assertAll
 
 La expresión `assertAll`, nos permite visualizar todos los assertions que no se cumplieron dentro de un método test, ya que normalmente, cuando se declaran las afirmaciones (assertions), al fallar el primero se detiene en ese punto impidiendo la ejecución del resto de los assertions de ese mismo método, por lo que no nos es posible visualizar si el resto de los assertions también pueden fallar.
 
 La expresión `assertAll`, nos muestra en el reporte todos los assertions que no se cumplieron. Esta expresión recibe como argumento un conjunto de expresiones lambda, donde en cada una de ella se definen los assertions a ejecutar.
 
-### INTEGRAR MENSAJES EN LOS ASSERTIONS
+#### INTEGRAR MENSAJES EN LOS ASSERTIONS
 
 Todos los assertions, aceptan como último argumento un objeto de tipo String, el cual nos permite agregar un mensaje personalizado para describir de una manera más clara el error producido en caso de que el assertion falle.
 
@@ -100,6 +100,10 @@ Esta anotación nos permite agregar mayor información a un método test, inform
 #### @Disabled
 
 Esta anotación nos sirve para indicarle a JUnit que el test no debe ejecutarse, es decir, se ignora, y en el reporte se muestra como test ignorado.
+
+#### @RepeatedTest
+
+JUnit nos provee una característica que nos permite ejecutar los test una cierta cantidad de veces que deseemos. Cuando especificamos la anotación **@RepeatedTest** en un método test ya no debemos escribir la anotación **@Test**.
 
 ### CICLO DE VIDA
 
@@ -142,11 +146,81 @@ class ClassTest {
 
 Las condicionales son pruebas unitarias que se van a ejecutar en cierto escenario, contexto o configuraciones, se mencionan algunos:
 
-* **@EnabledOnOs**: Ejecutar el test en cierto(s) sistema(s) operativo(s), los cuales pueden ser:
-* **@DisabledOnOs**: Deshabilitar el test en cierto(s) sistema(s) operativo(s).
-* **@EnabledOnJre**: Ejecutar el test en cierta(s) version(es) de Java.
-* **@DisabledOnJre**: Deshabilitar el test en cierta(s) version(es) de Java.
+* **@EnabledOnOs**: Ejecutar el test en cierto(s) sistema(s) operativo(s), podemos especificar un S.O., o mediante arreglo `{}` un conjunto de S.O. 
+* **@DisabledOnOs**: Deshabilitar el test en cierto(s) sistema(s) operativo(s), podemos especificar un S.O., o mediante arreglo `{}` un conjunto de S.O.
+* **@EnabledOnJre**: Ejecutar el test en cierta(s) version(es) de Java, podemos especificar una versión, o mediante arreglo `{}` un conjunto de versiones.
+* **@DisabledOnJre**: Deshabilitar el test en cierta(s) version(es) de Java, podemos especificar una versión, o mediante arreglo `{}` un conjunto de versiones.
 * **@EnabledIfSystemProperty**: Ejecutar test cuando una propiedad del sistema dada tenga un valor determinado. Para crear una nueva property en el arranque de la aplicación, escribimos `-DENV=DEV` en *Build and Run*
 * **@DisabledIfSystemProperty**: Deshabilitar test cuando una propiedad del sistema dada tenga un valor determinado.
 * **@EnabledIfEnvironmentVariable**: Ejecutar test cuando una variable de ambiente dada tenga un valor determinado. Para crear una nueva variable en el arranque de la aplicación, escribimos `ENVIRONMENT=DEV` en *Environment Variables*
 * **@DisabledIfEnvironmentVariable**: Deshabilitar test cuando una variable de ambiente dada tenga un valor determinado.
+
+### ASSUMPTIONS
+
+Nos sirven para evaluar una expresión booleana de forma programática, y con ella podemos habilitar o deshabilitar una prueba unitaria, un método o parte de un método.
+
+La sintaxis para utilizar *assumptions*:
+
+* Los *asserts* que se ejecutarán son aquellos que se encuentren definidos antes del método **assumeTrue**, los que están después de ese método, se ejecutarán si la expresión que se está evaluando dentro del **assumeTrue** es *true*, ó en su caso *false* si se llama al método **assumeFalse**. 
+
+    ~~~
+    @Test
+    void test() {
+        boolean esDev = "DEV".equals(System.getProperty("ENV"));
+        ...
+        assertNotNull(this.cuenta);
+        assumeTrue(esDev);
+        assertNotNull(this.cuenta.getSaldo());
+        ...
+    }
+    ~~~
+  
+* Otra alternativa para especificar los *asserts* a ejecutar si una regla se cumple, sería usando **assumingThat**, que además de recibir la expresión booleana a evaluar, recibe como segundo argumento una expresión lambda donde se especifican los *asserts* a ejecutar si la expresión booleana se cumple.
+
+    ~~~
+    @Test
+    void test() {
+        boolean esDev = "DEV".equals(System.getProperty("ENV"));
+        assumingThat(esDev, () -> {
+            assertTrue(this.cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+            ...
+        });
+        assertNotNull(this.cuenta.getSaldo());
+        ...
+    }
+    ~~~
+  
+### CLASES ANIDADAS
+
+Esta característica que nos provee JUnit nos permite ordenar y organizar nuestros métodos de *test* pero dentro de una clase anidada, en Java se le conoce como *inner class*, una clase que está dentro de otra clase.
+
+Para poder utilizar clases anidadas, debemos anotar a nivel clase con **@Nested**.
+
+~~~
+public class NestedClassTest {
+
+    @Nested
+    @DisplayName("Some name class")
+    class FirstInnerClass {
+    
+        @Test
+        void testOne() {
+            ...
+        }
+    }
+    
+    @Nested
+    @DisplayName("Some name class")
+    class SecondInnerClass {
+    
+        @Test
+        void testTwo() {
+            ...
+        }
+    }
+    
+    ...
+}
+~~~
+
+**Nota**: El ciclo de vida en clases anidadas, solo funcionan **@BeforeEach** y **@AfterEach** dentro de cada clase anidada pero **@BeforeAll** y **@AfterAll** no, por lo que esos últimos deben declararse en la clase principal.
