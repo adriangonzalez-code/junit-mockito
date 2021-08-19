@@ -224,3 +224,42 @@ public class NestedClassTest {
 ~~~
 
 **Nota**: El ciclo de vida en clases anidadas, solo funcionan **@BeforeEach** y **@AfterEach** dentro de cada clase anidada pero **@BeforeAll** y **@AfterAll** no, por lo que esos últimos deben declararse en la clase principal.
+
+### PRUEBAS PARAMETRIZADAS
+
+Es una característica que nos provee JUnit 5 para pasar o enviar por medio de parámetros (source) valores o datos al método test y así poder ejecutar varios escenarios en un solo método test. Tienen similitud con las pruebas repetidas (@RepeatedTest) en que por cada dato que se provee como parámetro es una ejecución de ese test.
+
+Para declarar un Parametrized Test, debemos invocar la anotación `@ParameterizedTest` en lugar de `@Test`, seguido de la anotación del recurso de los datos, dependiendo de dónde se obtendrán los datos para el test utilizaremos una de las siguientes anotaciones:
+
+* @ValueSource
+* @ArgumentsSource
+* @CsvFileSource
+* @CsvSource
+* @EmptySource
+* @EnumSource
+* @MethodSource
+* @NullAndEmptySource
+* @NullSource
+* @ArgumentsSources
+
+~~~
+@ParameterizedTest(name = "number {index} with value {0} - {argumentsWithNames}")
+@ValueSource(ints = {100, 200, 300, 500, 700, 1000})
+void myTestMethod(int value) {
+    ...
+}
+~~~
+
+### TAGGING
+
+Podemos categorizar nuestras pruebas a través de etiquetas, esta característica nos sirve para ejecutar nuestras pruebas de forma selectiva, es decir, podemos ejecutar ciertos métodos que tengan ciertas etiquetas. Las etiquetas se pueden aplicar a nivel método o a nivel clase.
+
+Para etiquetar se usa:
+
+~~~
+@Tag("name tag")
+@Test
+void testMethod() {
+  ...
+}
+~~~
