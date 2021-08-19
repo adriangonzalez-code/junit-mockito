@@ -265,3 +265,25 @@ void testMethod() {
 ~~~
 
 Para ejecutar test con etiqueta en particular, en las opciones de arranque, en *build and run* seleccionamos *tag* y escribimos el nombre del tag.
+
+### INYECCIÓN DE DEPENDENCIAS, COMPONENTES **TestInfo** Y **TestReporter**
+
+JUnit nos provee unas interfaces a través de la inyección de dependencias que podemos utilizar para darle una mayor funcionalidad a nuestros test, las cuales son **TestInfo** y **TestReporter**.
+
+* **TestInfo** nos provee información del test en ejecución, nombre del método, tags, displayName, etc. Para poder utilizar esa interfaz, solo debemos especificarla como argumento de nuestro método test.
+
+  ~~~
+  @Test
+  void testMethod(TestInfo testInfo) {
+    ...
+  }
+  ~~~
+
+* **TestReporter** nos sirve para imprimir información en el log de JUnit de manera informativa, con timestamps.
+
+  ~~~
+  @Test
+  void testMethod(TestReporter testReporter) {
+    testReporter.publishEntry("Your entry");
+  }
+  ~~~
