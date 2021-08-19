@@ -7,43 +7,34 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@Tag("cuenta")
-class CuentaTest {
+@Tag("dependency")
+public class DependencyInjectionTest {
 
     private Cuenta cuenta;
 
-    @BeforeAll
-    static void beforeAll() {
-        System.out.println("Inicializando el test");
-    }
+    private TestInfo testInfo;
+    private TestReporter testReporter;
 
     @BeforeEach
-    void initMethodTest() {
-        System.out.println("Iniciando el método");
+    void initMethodTest(TestInfo testInfo, TestReporter testReporter) {
+        this.testInfo = testInfo;
+        this.testReporter = testReporter;
+        this.testReporter.publishEntry("Ejecutando: " + this.testInfo.getDisplayName() + " " + this.testInfo.getTestMethod().orElse(null).getName() + " con las etiquetas " + this.testInfo.getTags());
+        if (this.testInfo.getTags().contains("error")) {
+            this.testReporter.publishEntry("Hacer algo con la etiqueta error");
+        }
         this.cuenta = new Cuenta("John", new BigDecimal("1000.12345"));
     }
 
     @AfterEach
     void tearDown() {
-        System.out.println("Finalizando el método");
+        this.testReporter.publishEntry("Finalizando el método");
     }
 
-    @AfterAll
-    static void afterAll() {
-        System.out.println("Finalizando el test");
-    }
-
-    /**
-     * Validate person name
-     * If real balance is not null
-     * If name is equals between expected and actual values with assertEquals
-     * If name is equals to John with assertTrue
-     * Adding a descriptive message to each assertion using lambda expressions
-     */
     @Test
     @DisplayName("Probando nombre de la cuenta corriente")
     void testNombreCuenta() {
+        this.testReporter.publishEntry(testInfo.getTags().toString());
         String esperado = "John";
         String real = this.cuenta.getPersona();
         assertNotNull(real, () -> "La cuenta no puede ser nula");
@@ -51,13 +42,6 @@ class CuentaTest {
         assertTrue(real.equals("John"), () -> "Nombre cuenta estada debe ser igual al real");
     }
 
-    /**
-     * Validate balance
-     * If balance is not null with assertNotNull
-     * If balance is equals between expected and actual values with assertEquals
-     * If balance is not less to zero with assertFalse
-     * If balance is higher to zero with assertTrue
-     */
     @Test
     @DisplayName("Probando el saldo de la cuenta corriente, que no sea null, mayor que cero, valor esperado")
     void testSaldoCuenta() {
@@ -67,11 +51,6 @@ class CuentaTest {
         assertTrue(this.cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
     }
 
-    /**
-     * Validate objects for value
-     * If object2 is not equals to object1 with assertNotEquals
-     * If object2 is equals to object1 with assertEquals
-     */
     @Test
     @DisplayName("Testando referencias que sean iguales con el método equals")
     void testReferenciaCuenta() {
@@ -98,9 +77,6 @@ class CuentaTest {
         assertEquals("1100.12345", this.cuenta.getSaldo().toPlainString());
     }
 
-    /**
-     * Validate that produces any exception type with assertThrows
-     */
     @Tag("error")
     @Test
     void testDineroInsuficienteException() {
@@ -151,10 +127,6 @@ class CuentaTest {
                 .anyMatch(c -> c.getPersona().equals("John")));
     }
 
-    /**
-     * Validate all assertions with assertAll, this display into the report all assertion with error
-     * Adding a descriptive message to some assertions using lambda expressions
-     */
     @Tag("banco")
     @Test
     @DisplayName("Probando relaciones entre las cuentas y el banco con assertAll")

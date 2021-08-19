@@ -1,10 +1,17 @@
 package com.smoothiemx.junitapp.app.models;
 
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.*;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class ConditionalTest {
 
@@ -102,5 +109,28 @@ public class ConditionalTest {
     @Test
     @DisabledIfEnvironmentVariable(named = "ENVIRONMENT", matches = "PROD")
     void testEnvProdDisabled() {
+    }
+
+    @Tag("timeout")
+    @Nested
+    public class TimeoutClass {
+        @Test
+        @Timeout(1)
+        void pruebaTimeout() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(1);
+        }
+
+        @Test
+        @Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
+        void pruebaTimeout2() throws InterruptedException {
+            TimeUnit.MILLISECONDS.sleep(1000);
+        }
+
+        @Test
+        void testTimeoutAssertions() {
+            assertTimeout(Duration.ofSeconds(5), () -> {
+                TimeUnit.MILLISECONDS.sleep(4999);
+            });
+        }
     }
 }

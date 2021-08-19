@@ -2,6 +2,7 @@ package com.smoothiemx.junitapp.app.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class AssumptionTest {
         this.cuenta = new Cuenta("John", new BigDecimal("1000.12345"));
     }
 
+    @Tag("cuenta")
     @Test
     @DisplayName("Test saldo cuenta Dev")
     void testSaldoCuentaDev() {
@@ -30,6 +32,7 @@ public class AssumptionTest {
         assertTrue(this.cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
     }
 
+    @Tag("cuenta")
     @Test
     @DisplayName("Test saldo cuenta Dev 2")
     void testSaldoCuentaDev2() {
