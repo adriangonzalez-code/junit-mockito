@@ -287,3 +287,33 @@ JUnit nos provee unas interfaces a través de la inyección de dependencias que 
     testReporter.publishEntry("Your entry");
   }
   ~~~
+  
+### TIMEOUT
+
+Podemos disparar un error cuando una prueba unitaria haya tardado una cierta cantidad de tiempo en terminar de ejecutarse. Mencionaré 3 formas de manejar los timeouts.
+
+~~~
+@Test
+@Timeout(1)
+void pruebaTimeout() throws InterruptedException {
+    ...
+}
+
+~~~
+
+~~~
+@Test
+@Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
+void pruebaTimeout2() throws InterruptedException {
+    ...
+}
+~~~
+
+~~~
+@Test
+void testTimeoutAssertions() {
+    assertTimeout(Duration.ofSeconds(5), () -> {
+        ...
+    });
+}
+~~~
