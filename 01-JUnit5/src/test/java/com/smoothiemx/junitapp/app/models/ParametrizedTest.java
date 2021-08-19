@@ -1,6 +1,7 @@
 package com.smoothiemx.junitapp.app.models;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("param")
 public class ParametrizedTest {
 
     private Cuenta cuenta;

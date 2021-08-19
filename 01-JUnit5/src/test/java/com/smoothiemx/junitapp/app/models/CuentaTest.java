@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 // @TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@Tag("cuenta")
 class CuentaTest {
 
     private Cuenta cuenta;
@@ -100,6 +101,7 @@ class CuentaTest {
     /**
      * Validate that produces any exception type with assertThrows
      */
+    @Tag("error")
     @Test
     void testDineroInsuficienteException() {
         Exception exception = assertThrows(DineroInsuficienteException.class, () -> {
@@ -111,6 +113,7 @@ class CuentaTest {
         assertEquals(esperado, actual);
     }
 
+    @Tag("banco")
     @Test
     void testTransferirDineroCuenta() {
         this.cuenta = new Cuenta("John Doe", new BigDecimal("2500"));
@@ -124,6 +127,7 @@ class CuentaTest {
         assertEquals("3000", this.cuenta.getSaldo().toPlainString());
     }
 
+    @Tag("banco")
     @Test
     @Disabled
     void testRelacionBancoCuentas() {
@@ -151,6 +155,7 @@ class CuentaTest {
      * Validate all assertions with assertAll, this display into the report all assertion with error
      * Adding a descriptive message to some assertions using lambda expressions
      */
+    @Tag("banco")
     @Test
     @DisplayName("Probando relaciones entre las cuentas y el banco con assertAll")
     void testRelacionBancoCuentasAssertAll() {

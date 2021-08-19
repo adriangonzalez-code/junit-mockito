@@ -263,3 +263,5 @@ void testMethod() {
   ...
 }
 ~~~
+
+Para ejecutar test con etiqueta en particular, en las opciones de arranque, en *build and run* seleccionamos *tag* y escribimos el nombre del tag.
