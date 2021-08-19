@@ -317,3 +317,27 @@ void testTimeoutAssertions() {
     });
 }
 ~~~
+
+### MAVEN SUREFIRE PLUGIN
+
+Es un plugin que nos permite ejecutar nuestras pruebas unitarias desde la terminal cuando no tenemos instalado un IDE. Para ello, debemos agregamos el plugin en la sección de *plugins* en el **pom.xml**
+
+~~~
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>2.22.2</version>
+</plugin>
+~~~
+
+Y en la terminal, desde la raíz del proyecto, ejecutamos el comando:
+
+  > mvn test
+
+Si deseamos ejecutar test con ciertas etiquetas, configuramos en el **pom.xml**, debajo de *version* agregamos la etiqueta *configuration*
+
+~~~
+<configuration>
+    <groups>tagName</groups>
+</configuration>
+~~~
