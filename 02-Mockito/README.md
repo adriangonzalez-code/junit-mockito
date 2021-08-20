@@ -35,3 +35,31 @@ Para empezar a trabajar con Mockito, debemos agregar las dependencias JUnit y pr
     <version>3.11.2</version>
 </dependency>
 ~~~
+
+### TRABAJANDO CON MOCKITO
+
+Como mencioné anteriormente, trabajar con Mockito significa simular (mockear) objetos para definir el comportamiento que deseamos en un método y obtener de este, un resultado esperado.
+
+Para indicarle a Mockito la clase o interfaz a simular (mockear), utilizamos el método `mock()`, que recibe como parámetro la clase o interfaz a mockear, es decir, aquella que se va a simular su comportamiento.
+
+~~~
+@Test
+void testMethod() {
+    MyClassRepository myClass = mock(MyClassRepository.class);
+    ...
+}
+~~~
+
+Para definir el comportamiento de un método de una clase mockeada con `mock()`, utilizamos el método `when()` que recibe como parámetro el nombre del método a simular, y posteriormente llamamos al método `thenReturn()` para definir el valor a retornar tras la llamada al método definido.
+
+~~~
+@Test
+void testMethod() {
+    MyClassRepository myClass = mock(MyClassRepository.class);
+    String myReturnData = "My return data after method call"; 
+
+    when(myClass.myMethod()).thenReturn(muReturnData);
+}
+~~~
+
+**Notas**: Solo se pueden hacer mocks de métodos que son public o default, pero no de métodos private ni de métodos estáticos ni de métodos final.
