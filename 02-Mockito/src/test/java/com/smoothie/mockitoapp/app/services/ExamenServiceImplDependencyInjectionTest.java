@@ -5,6 +5,11 @@ import com.smoothie.mockitoapp.app.repositories.ExamenRepository;
 import com.smoothie.mockitoapp.app.repositories.PreguntaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,18 +19,22 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-class ExamenServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class ExamenServiceImplDependencyInjectionTest {
 
+    @Mock
     private ExamenRepository repository;
-    private PreguntaRepository preguntaRepository;
-    private ExamenService service;
 
-    @BeforeEach
+    @Mock
+    private PreguntaRepository preguntaRepository;
+
+    @InjectMocks
+    private ExamenServiceImpl service;
+
+    /*@BeforeEach
     void setUp() {
-        this.repository = mock(ExamenRepository.class);
-        this.preguntaRepository = mock(PreguntaRepository.class);
-        this.service = new ExamenServiceImpl(repository, preguntaRepository);
-    }
+        MockitoAnnotations.openMocks(this);
+    }*/
 
     @Test
     void findExamenPorNombre() {
@@ -82,5 +91,10 @@ class ExamenServiceImplTest {
 
         verify(this.repository).findAll();
         verify(this.preguntaRepository).findPreguntasPorExamenId(anyLong());
+    }
+
+    @Test
+    void testGuardarExamen() {
+        when(this.repository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);
     }
 }
