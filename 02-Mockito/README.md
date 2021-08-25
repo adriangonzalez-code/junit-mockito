@@ -155,4 +155,37 @@ Si inyectamos clases a través de anotaciones, debemos realizar ciertas configur
         <artifactId>mockito-junit-jupiter</artifactId>
     </dependency>
     ~~~
-  
+
+#### ARGUMENT MATCHERS
+
+ArgumentMatchers es una característica de Mockito que nos permite conocer si coincide el valor real que se pasa por argumento en un método. Se puede utilizar para asegurarse de que ciertos argumentos se pasen a los Mocks.
+
+Se utiliza con el verify, para verificar, además si se invocó un método, también si se invocó con un valor de argumento en específico.
+
+#### ARGUMENT CAPTOR
+
+Nos permite capturar el valor que se pasa como argumento en un método, para así verificar que sea un valor en específico.
+
+#### do... FAMILY
+
+Es una familia de métodos similar al `when().thenReturn()`, casi con las mismas similitudes, pero con la nueva particularidad que son ideales para testear métodos void.
+
+##### doThrow()
+
+Para testear un método que, en su proceso puede generar una excepción sin devolverla propiamente.
+
+##### doAnswer()
+
+Nos permite generar una respuesta personalizada al testear un método.
+
+#### doCallRealMethod
+
+Nos permite invocar el método real del mock, es decir, ya no es simulado. Para poder utilizar este método, el mock debe ser una clase con implementación, no puede ser una clase abstracta o una interfaz.
+
+#### SPY
+
+Los Spy no son 100% mocks, son híbridos entre el objeto real y el mock, por lo que nos permite invocarlos sin definir un `when()` o simulacro, no tenemos que mockear ningún método, En pocas palabras, cuando invoquemos el método, va a hacer la llamada real a ese método. Para ser mas claros, un Spy es un clon del objeto real pero con características de un mock.
+
+Los Spy requieren ser creados a partir de una clase concreta, no desde una clase abstracta o una interfaz, ya que el Spy realiza llamadas a los métodos reales.
+
+Si queremos simular el proceso de algunos de los métodos de los Spy, es recomendable utilizar la familia de métodos `do...`. 

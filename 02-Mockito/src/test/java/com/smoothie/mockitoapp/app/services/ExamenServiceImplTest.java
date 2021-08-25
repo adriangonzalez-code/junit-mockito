@@ -1,5 +1,6 @@
 package com.smoothie.mockitoapp.app.services;
 
+import com.smoothie.mockitoapp.app.Datos;
 import com.smoothie.mockitoapp.app.models.Examen;
 import com.smoothie.mockitoapp.app.repositories.ExamenRepository;
 import com.smoothie.mockitoapp.app.repositories.PreguntaRepository;
@@ -76,7 +77,7 @@ class ExamenServiceImplTest {
     void testNoExisteExamenVerify() {
         when(this.repository.findAll()).thenReturn(Collections.emptyList());
         when(this.preguntaRepository.findPreguntasPorExamenId(anyLong())).thenReturn(Datos.PREGUNTAS);
-        Examen examen = this.service.findExamenPorNombreConPreguntas("Matemáticas21");
+        Examen examen = this.service.findExamenPorNombreConPreguntas("Matemáticas");
 
         assertNull(examen);
 
