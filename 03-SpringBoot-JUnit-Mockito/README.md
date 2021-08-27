@@ -12,3 +12,15 @@ Cuando creamos un proyecto con **Spring Initializr**, agregando la dependencia *
 </dependency>
 ~~~
 
+## JPA TEST
+
+Para realizar pruebas unitarias de repositorios, se recomienda utilizar una Base de Datos en memoria, tal como **h2**. Para poder utilizarla, debemos agregar la dependencia al **pom.xml** especificando el scope: **test**.
+
+~~~
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <scope>test</scope>
+</dependency>
+~~~
+
