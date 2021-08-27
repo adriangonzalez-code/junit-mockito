@@ -6,16 +6,16 @@ import com.smoothiemx.sbjunitmockito.app.models.Cuenta;
 import com.smoothiemx.sbjunitmockito.app.repositories.BancoRepository;
 import com.smoothiemx.sbjunitmockito.app.repositories.CuentaRepository;
 import com.smoothiemx.sbjunitmockito.app.services.CuentaService;
-import com.smoothiemx.sbjunitmockito.app.services.CuentaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.smoothiemx.sbjunitmockito.app.Datos.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -122,5 +122,44 @@ public class MockBeanAutowiredTest {
         assertEquals("Adrián", cuenta2.getPersona());
 
         verify(cuentaRepository, times(2)).findById(1L);
+    }
+
+    @Test
+    void testFindAll() {
+        // Given
+        List<Cuenta> datos = Arrays.asList(crearCuenta001().orElseThrow(NoSuchElementException::new), crearCuenta002().orElseThrow(NoSuchElementException::new));
+        when(cuentaRepository.findAll()).thenReturn(datos);
+
+        // When
+        List<Cuenta> cuentas = service.findAll();
+
+        // Then
+        assertFalse(cuentas.isEmpty());
+        assertEquals(2, cuentas.size());
+        assertTrue(cuentas.contains(crearCuenta002().orElseThrow(NoSuchElementException::new)));
+
+        verify(cuentaRepository).findAll();
+    }
+
+    @Test
+    void testSave() {
+        // Given
+        Cuenta cuentaPepe = new Cuenta(null, "Pepe", new BigDecimal("3000"));
+        when(cuentaRepository.save(any(Cuenta.class))).then(invocation -> {
+            Cuenta c = invocation.getArgument(0);
+            c.setId(3L);
+
+            return c;
+        });
+
+        // When
+        Cuenta cuenta = service.save(cuentaPepe);
+
+        // Then
+        assertEquals("Pepe", cuenta.getPersona());
+        assertEquals(3L, cuenta.getId());
+        assertEquals("3000", cuenta.getSaldo().toPlainString());
+
+        verify(cuentaRepository).save(any(Cuenta.class));
     }
 }
