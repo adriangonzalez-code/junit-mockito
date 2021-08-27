@@ -2,10 +2,15 @@ package com.smoothiemx.sbjunitmockito.app.models;
 
 import com.smoothiemx.sbjunitmockito.app.exceptions.DineroInsuficienteException;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "cuentas")
 public class Cuenta {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String persona;
     private BigDecimal saldo;

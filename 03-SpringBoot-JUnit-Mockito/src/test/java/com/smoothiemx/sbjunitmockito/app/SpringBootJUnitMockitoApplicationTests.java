@@ -33,7 +33,7 @@ class SpringBootJUnitMockitoApplicationTests {
         service = new CuentaServiceImpl(cuentaRepository, bancoRepository);
     }
 
-    @Test
+    /*@Test
     void contextLoads() {
         when(cuentaRepository.findById(1L)).thenReturn(crearCuenta001());
         when(cuentaRepository.findById(2L)).thenReturn(crearCuenta002());
@@ -65,9 +65,9 @@ class SpringBootJUnitMockitoApplicationTests {
 
         verify(cuentaRepository, times(6)).findById(anyLong());
         verify(cuentaRepository, never()).findAll();
-    }
+    }*/
 
-    @Test
+    /*@Test
     void contextLoads2() {
         when(cuentaRepository.findById(1L)).thenReturn(crearCuenta001());
         when(cuentaRepository.findById(2L)).thenReturn(crearCuenta002());
@@ -101,9 +101,9 @@ class SpringBootJUnitMockitoApplicationTests {
 
         verify(cuentaRepository, times(5)).findById(anyLong());
         verify(cuentaRepository, never()).findAll();
-    }
+    }*/
 
-    @Test
+    /*@Test
     void contextLoads3() {
         when(cuentaRepository.findById(1L)).thenReturn(crearCuenta001());
 
@@ -116,5 +116,5 @@ class SpringBootJUnitMockitoApplicationTests {
         assertEquals("Adrián", cuenta2.getPersona());
 
         verify(cuentaRepository, times(2)).findById(1L);
-    }
+    }*/
 }
