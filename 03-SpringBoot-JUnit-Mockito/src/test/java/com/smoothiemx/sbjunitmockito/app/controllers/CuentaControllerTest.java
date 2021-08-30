@@ -1,6 +1,5 @@
 package com.smoothiemx.sbjunitmockito.app.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smoothiemx.sbjunitmockito.app.Datos;
 import com.smoothiemx.sbjunitmockito.app.models.Cuenta;
@@ -20,9 +19,7 @@ import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
